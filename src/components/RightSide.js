@@ -36,10 +36,7 @@ const RightSide = (props) => {
       </FollowCard>
 
       <BannerCard>
-        <img
-          src="https://static-exp1.licdn.com/scds/common/u/images/promo/ads/li_evergreen_jobs_ad_300x250_v1.jpg"
-          alt=""
-        />
+        <img src="/images/jobs.jpg" alt="" />
       </BannerCard>
     </Container>
   );
@@ -101,7 +98,7 @@ const FeedList = styled.ul`
   }
 `;
 const Avatar = styled.div`
-  background-image: url("https://static-exp1.licdn.com/sc/h/1b4vl1r54ijmrmcyxzoidwmxs");
+  background-image: url("/images/hashi.jpeg");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
