@@ -1,14 +1,44 @@
 import styled from "styled-components";
 import React from "react";
-
+import PostModal from "./PostModal";
+import { connect } from "react-redux";
+import { useEffect, useState } from "react";
+import { getArticlesAPI } from "../actions";
 const Main = (props) => {
+  const [showModal, setShowModal] = useState("close");
+  useEffect(() => {
+    props.getArticles();
+  }, []);
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+
+    switch (showModal) {
+      case "open":
+        setShowModal("close");
+        break;
+      case "close":
+        setShowModal("open");
+        break;
+      default:
+        setShowModal("close");
+        break;
+    }
+  };
   return (
     <Container>
       <ShareBox>
-        Share
         <div>
-          <img src="/images/user.svg" alt="" />
-          <button>Start a post</button>
+          {props.user && props.user.photoURL ? (
+            <img src={props.user.photoURL} alt="" />
+          ) : (
+            <img src="/images/user.svg" alt="" />
+          )}
+          <button onClick={handleClick} disabled={props.loading ? true : false}>
+            Start a post
+          </button>
         </div>
         <div>
           <button>
@@ -29,7 +59,8 @@ const Main = (props) => {
           </button>
         </div>
       </ShareBox>
-      <div>
+      <Content>
+        {props.loading && <img src="/images/spin-loader.jpeg" alt="" />}
         <Article>
           <SharedActor>
             <a>
@@ -87,7 +118,8 @@ const Main = (props) => {
             </button>
           </SocialActions>
         </Article>
-      </div>
+      </Content>
+      <PostModal showModal={showModal} handleClick={handleClick} />
     </Container>
   );
 };
@@ -96,6 +128,12 @@ const Container = styled.div`
   grid-area: main;
 `;
 
+const Content = styled.div`
+  text-align: center;
+  & > img {
+    width: 30px;
+  }
+`;
 const CommonCard = styled.div`
   text-align: center;
   overflow: hidden;
@@ -281,4 +319,16 @@ const SocialActions = styled.div`
     }
   }
 `;
-export default Main;
+
+const mapStateToProps = (state) => {
+  return {
+    loading: state.articleState.loading,
+    user: state.userState.user,
+    articles: state.articleState.articles,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getArticles: () => dispatch(getArticlesAPI()),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
