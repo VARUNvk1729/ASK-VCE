@@ -36,7 +36,7 @@ A social media application platform for Alumni, students, and teachers. It was b
     npm run build
     ```
 
-1. **Now for hosting on Firebase lets config Firebase locally**
+1. Now for hosting on Firebase lets config Firebase locally
 
     - Install Firebase CLI
     - Login to Firebase
